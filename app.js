@@ -174,7 +174,7 @@ for(let i =0;i<productos.length;i++)
     }
   
 }
-
+contador=0;
 let compra =prompt(`\n 1 - ${productosDisponibles[0].descripcion} $ ${productosDisponibles[0].valor} \n 2 - ${productosDisponibles[1].descripcion}  $ ${productosDisponibles[1].valor}  \n 3 - ${productosDisponibles[2].descripcion}  $ ${productosDisponibles[2].valor}\n 4 - ${productosDisponibles[3].descripcion}  $ ${productosDisponibles[3].valor}`);
 let productoSeleccionado=productosDisponibles[compra-1];
 let indice =productos.findIndex(producto => producto.id===productoSeleccionado.id); 
@@ -215,20 +215,19 @@ function verCarrito ()
 
 
 
-function vaciarCarrito ()
+function vaciarCarrito (accion)
 {
     for(let i=carrito.length;i>0;i--)
         {
-          // let indice=productos.findIndex(producto => producto.id===carrito[i].id); 
-          
-         // productos[indice].cantidad--;
-           // alert("1");
             carrito.pop();
-          
-          
         }
-        alert("Su carrito se vacio correctamente");
-        MenuUsuario();
+        //Accion 0 CLIENTE VACIA SU CARRITO /
+        if(accion===0)
+        {
+            alert("Su carrito se vacio correctamente");
+            MenuUsuario();
+        }
+     
 
 }
 
@@ -356,7 +355,7 @@ function MenuUsuario()
       case 3:
            if(carrito.length>0)
             {
-            vaciarCarrito ();
+            vaciarCarrito (0);
             alert("Carrito vaciado correctamente");
             MenuUsuario ();
            }
@@ -419,7 +418,7 @@ function comprar (totalDineroCompra)
                     usuarios[i].cuenta=usuarios[i].cuenta-totalDineroCompra;
                     generarFactura(totalDineroCompra); //Genero factura
                     debitarStock(); // debito stock
-                    vaciarCarrito (); //vaci ocarrito
+                    vaciarCarrito (1); //vaci ocarrito
                     alert("Compra Realizada con éxito, recibirá un correo con los detalles");
          
                  
