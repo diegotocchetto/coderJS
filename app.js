@@ -243,7 +243,6 @@ MenuUsuario ();
 //VER CARRITO
 function verCarrito()
 {
- alert("llega1");
     let lineaCarrito="";
     carrito.forEach(elementoCarrito => {//elementoCarrito es el elemento que esta dentro del arry
        lineaCarrito= lineaCarrito+ elementoCarrito.descProducto+"    Cantidad:" +elementoCarrito.cantidad+"    Total $" +elementoCarrito.precioLineaCarrito+" \n" ;
