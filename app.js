@@ -282,7 +282,7 @@ function vaciarCarrito (accion)
         }
         
         
-        if(carrito.length===0)
+        if(carrito.length===0 && accion===0)
         {
             alert("No hay items en su carrito");
         }
