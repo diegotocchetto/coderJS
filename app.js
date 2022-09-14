@@ -6,7 +6,6 @@ const productosDisponibles=[];
 let producto;
 let pass;
 //let formaPago;
-
 let usuarioLogueado;
 
 
@@ -49,29 +48,32 @@ class Usuario{
 
 
 
-
-
-
-
     class Producto{
-        constructor(id,descripcion,valor,cantidad) {
+        constructor(id,descripcion,valor,cantidad,imagen) {
             this.id=id;
             this.descripcion=descripcion;
             this.valor=valor;
             this.cantidad=cantidad;
+            this.imagen=imagen;
             }
         }
     
 
         //sE HARCODEA PARA TRABAJAR MAS RAPIDO //NO ESTA IMPLEMENTADOP AGREGAR PRODUCTOS
-        const producto1  = new Producto (1,"MONITOR PHILIPS 17 PULGADAS",2000,5);
-        const producto2 = new Producto (2,"TV SAMSUNG 65 PULGADAS",10000,0);
-        const producto3 = new Producto (3,"TELEFONO IPHONE 10",50,1);
-        const producto4 = new Producto (4,"TELEFONO SAMSUNG S20",15000,5);
+        const producto1  = new Producto (1,"TV SMART 50 ANDROID",19336,5,"tv50.jpg");
+        const producto2 = new Producto (2,"TV SMART 65 ANDROID",25025,0,"tv65.jpg");
+        const producto3 = new Producto (3,"LAVARROPA CYAN C",11690,1,"lavarropa.jpg");
+        const producto4 = new Producto (4,"AIRE ACONDICIONADO 12KBTU",22000,5,"Aire.jpg");
+        const producto5 = new Producto (4,"HELADERA FRENCH DOOR INV",52000,5,"Heladera.jpg");
+        const producto6 = new Producto (4,"MINICOMPONENTE 5000W",15000,5,"miniComponente.jpg");
+
         productos.push(producto1);
         productos.push(producto2);
         productos.push(producto3);
         productos.push(producto4);
+        productos.push(producto5);
+        productos.push(producto6);
+  
 
 
 
@@ -135,15 +137,36 @@ function agregarUsuario ()
 {
     let nombre =prompt("Ingrese Nombre").toUpperCase();
     let apellido=prompt("Ingrese Apellido").toUpperCase();;
-    let email=prompt("Ingrese su Correo electronico");
+    let email=prompt("Ingrese su Correo electronico").toLowerCase();
     let nombreUsuario=prompt("Ingrese un nombre de usuario").toLowerCase();
     let pass=prompt("Ingrese un password");
-    const usuario = new Usuario (documento,nombre,apellido,nombreUsuario,pass);
+    let id=Math.ceil(Math.random()*1000).toString();
+    let cuenta=0;
+
+    const usuario = new Usuario (id,nombre,apellido,nombreUsuario,pass,cuenta,email);
+    const existeUsuarioMail=usuarios.find(usuario => usuario.email === email);
+    const existeUsuarioNombreUsuario=usuarios.find(usuario => usuario.nombreUsuario === nombreUsuario);
+   
+    if(!existeUsuarioMail && !existeUsuarioNombreUsuario){
     usuarios.push(usuario);
     alert(`Hola ${usuario.nombre} ${usuario.apellido} , te has registrado correctamente`);
+   }
+
+
+   //SI EXISTE EL USUARIO VERIFICO QUE ESTA DUPLICADO, SI EL NOMBREUSUARIO O EL CORREO
+   if(existeUsuarioMail)
+   {
+    alert("YA EXISTE UN USUARIO CON ESE CORREO ELECTRÓNICO")
+   }
+   if(existeUsuarioNombreUsuario)
+   {
+    alert("YA EXISTE UN USUARIO CON ESE NOMBRE DE USUARIO")
+   }
+
+
+ 
     mostrarMenuGeneral();
 }
-
 
 
 
@@ -151,6 +174,7 @@ function agregarUsuario ()
 
 function mostrarMenulogueo()
 {
+
     let nombreUsuario= prompt("Ingrese Su Usuario");
     let password= prompt("Ingrese su password");
    if( validarUsuario(nombreUsuario,password))
@@ -526,7 +550,42 @@ function calcularPrecioLinea(precio,cantidad)
    return (totalLinea);
  
 }
+//mostrarMenuGeneral(); //SE COMENTA POR AGREGADO DE DOM
 
 
 
-mostrarMenuGeneral();
+
+//VERSION V2 con DOM MOSTRAR PRODUCTOS 
+function mostrarProductos()
+{
+    let textoBoton="";
+for (producto of productos)
+{
+    if(producto.cantidad<=0){
+        producto.valor="Agotado";
+        textoBoton="Agotado";
+    }
+    else{ textoBoton="Compar"}
+
+   const row =document.getElementById('Productos');
+   row.innerHTML +=`
+   <div class="col-12 col-md-4">
+   <div class="card" style="width: 18rem;">
+       <img src="imagenes/${producto.imagen}" class="card-img-top" alt="...">
+       <div class="card-body">
+         <h5 class="card-title" id="nombreProd">${producto.descripcion}</h5>
+         <p class="card-text">$<span>${producto.valor}</span></p>
+         <a href="#" class="btn btn-primary" data-id=${producto.id}>${textoBoton}</a>
+       </div>
+     </div>
+</div>`
+}
+}
+
+mostrarProductos();
+
+
+
+
+
+
