@@ -150,18 +150,18 @@ function agregarUsuario ()
    
     if(!existeUsuarioMail && !existeUsuarioNombreUsuario){
     usuarios.push(usuario);
-    alert(`Hola ${usuario.nombre} ${usuario.apellido} , te has registrado correctamente`);
+    //alert(`Hola ${usuario.nombre} ${usuario.apellido} , te has registrado correctamente`);
    }
 
 
    //SI EXISTE EL USUARIO VERIFICO QUE ESTA DUPLICADO, SI EL NOMBREUSUARIO O EL CORREO
    if(existeUsuarioMail)
    {
-    alert("YA EXISTE UN USUARIO CON ESE CORREO ELECTRÓNICO")
+   // alert("YA EXISTE UN USUARIO CON ESE CORREO ELECTRÓNICO")
    }
    if(existeUsuarioNombreUsuario)
    {
-    alert("YA EXISTE UN USUARIO CON ESE NOMBRE DE USUARIO")
+   // alert("YA EXISTE UN USUARIO CON ESE NOMBRE DE USUARIO")
    }
 
 
@@ -180,14 +180,14 @@ function mostrarMenulogueo()
     let password= prompt("Ingrese su password");
    if( validarUsuario(nombreUsuario,password))
    {
-          alert(`Bienvenido ${usuarioLogueado.nombre.toUpperCase()} ${usuarioLogueado.apellido.toUpperCase()}`);
+       //   alert(`Bienvenido ${usuarioLogueado.nombre.toUpperCase()} ${usuarioLogueado.apellido.toUpperCase()}`);
 
           MenuUsuario ();
 
    }
    else
    {
-    alert("Usuario o contraseña incorrectos");
+   // alert("Usuario o contraseña incorrectos");
     mostrarMenuGeneral();
   
     }
@@ -262,7 +262,7 @@ function vaciarCarrito (accion)
         
         if(carrito.length===0 && accion===0)
         {
-            alert("No hay items en su carrito");
+        //    alert("No hay items en su carrito");
         }
         else
         {
@@ -287,12 +287,12 @@ function agregarDineroACuentaUsuario (usuarioLogueado)
     {
        if(usuarios[i].nombreUsuario===usuarioLogueado.nombreUsuario)
        {
-            alert(`Su saldo actual es ${usuarios[i].cuenta}`);
+          //  alert(`Su saldo actual es ${usuarios[i].cuenta}`);
             let deposito=parseFloat(prompt("Ingrese el dinero a depositar")); 
             let saldo = usuarios[i].cuenta;   
             usuarios[i].cuenta =  saldo+ deposito;
             usuarioLogueado=usuarios[i];
-            alert(`Se ha agregado dinero a su cuenta, su saldo es ${usuarios[i].cuenta}`);
+         //   alert(`Se ha agregado dinero a su cuenta, su saldo es ${usuarios[i].cuenta}`);
             break;
       }
    
@@ -309,10 +309,10 @@ function agregarDineroACuentaUsuario (usuarioLogueado)
 
 function generarFactura(total,carrito)
 {
-    let nroFactura=Math.ceil(Math.random()*1000000).toString();
+    //let nroFactura=Math.ceil(Math.random()*1000000).toString();
 
-    const factura = new Factura (usuarioLogueado.id,nroFactura,fechaActual(),total,carrito);
-    facturas.push(factura);
+  //  const factura = new Factura (usuarioLogueado.id,nroFactura,fechaActual(),total,carrito);
+   // facturas.push(factura);
      
 }
 
@@ -362,15 +362,15 @@ function miCuenta (usuarioLogueado)
             let opcion =Number(prompt("\n 1 - Ver Mis Datos \n 2 - Mis compras \n 3 - Mi Saldo \n 4 - Recargar Saldo \n 5 - Volver"));
             switch(opcion){
                 case 1:
-                    alert(`Nombre: ${usuarioLogueado.nombre.toUpperCase()}  ${usuarioLogueado.apellido.toUpperCase()}\nEmail: ${usuarioLogueado.email.toUpperCase()}`);
+                 //   alert(`Nombre: ${usuarioLogueado.nombre.toUpperCase()}  ${usuarioLogueado.apellido.toUpperCase()}\nEmail: ${usuarioLogueado.email.toUpperCase()}`);
                     miCuenta (usuarioLogueado);
                     break;
                 case 2:
-                   alert(verFactura(usuarioLogueado.id));
+              //     alert(verFactura(usuarioLogueado.id));
                    miCuenta (usuarioLogueado);
                     break;
                 case 3:
-                    alert(`Su saldo actual es: $ ${usuarioLogueado.cuenta}`)
+                  ///  alert(`Su saldo actual es: $ ${usuarioLogueado.cuenta}`)
                     miCuenta (usuarioLogueado);
                     break;
                 case 4:
@@ -390,7 +390,7 @@ function miCuenta (usuarioLogueado)
 
 function MenuUsuario()
 {
-  let entrada= Number(prompt("\n 1 - Comprar Producto \n 2 - Mostrar Carrito\n 3 - Vaciar Carrito\n 4 - Pagar \n 5 - Mi Cuenta\n 6 - Salir"));
+ // let entrada= Number(prompt("\n 1 - Comprar Producto \n 2 - Mostrar Carrito\n 3 - Vaciar Carrito\n 4 - Pagar \n 5 - Mi Cuenta\n 6 - Salir"));
  
 
   switch(entrada)
@@ -452,28 +452,29 @@ let montoTotal=0;;
 
 function comprar ()
 {
+    console.log("llego a comrar")
     let total=montoCompra();
     if(carrito.length>0){
 
-            let i =usuarios.findIndex(usuario => usuario.nombreUsuario===usuarioLogueado.nombreUsuario); 
+           // let i =usuarios.findIndex(usuario => usuario.nombreUsuario===usuarioLogueado.nombreUsuario); 
 
 
-                if(parseFloat(usuarios[i].cuenta)>=parseFloat(total))  {
+            // if(parseFloat(usuarios[i].cuenta)>=parseFloat(total))  {
 
                     //actualizo el saldo en el array de usuariosd
-                    usuarios[i].cuenta-=total;
-                    generarFactura(total,carrito);
+                //    usuarios[i].cuenta-=total;
+                  //  generarFactura(total,carrito);
                      vaciarCarrito(1);
                     alert("Compra Realizada con éxito, recibirá un correo con los detalles");
-                }
-                else{
-                alert(`Saldo Insuficiente, su saldo es de $ ${usuarios[i].cuenta} , recargue dinero para continuar con la compra`);
-                }
+              // }
+            // else{
+              //  alert(`Saldo Insuficiente, su saldo es de $ ${usuarios[i].cuenta} , recargue dinero para continuar con la compra`);
+             //  }
     }
     else{
-         alert("Su carrito esta vacío");
+       window("Su carrito esta vacío, agregue productos pra comprar");
     }
-    MenuUsuario() ; 
+   // MenuUsuario() ; 
 }
    
 
@@ -603,17 +604,22 @@ console.log("hola boton login");
 //evento boton vaciar carrito
 const eventoBotonVaciar=document.getElementById("btnBorrar");
 eventoBotonVaciar.addEventListener('click', e => {  
+
   
   
-  
-  
-        vaciarCarrito();
+        vaciarCarrito(0);
         console.log(carrito.length)
         productos[0].cantidad;
         produc.innerHTML="";
         mostrarProductos()
     })
 
+ //evento boton COMPRAR carrito
+ const eventoBotonComprar=document.getElementById("btnComprar");
+ eventoBotonComprar.addEventListener('click', e => {   
+   comprar();  
+mostrarProductos();
+})
 
 //VER CARRITO
 function verCarrito()
