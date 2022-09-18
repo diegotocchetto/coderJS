@@ -7,17 +7,88 @@
     <title>E Commerce</title>
   <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-
 </head>
 <body>
-    <header>
-        <div class="container">
-         <h1 class="text-center">Carrito</h1>
-         <hr> 
-           <div class ="row" id="Productos"></div>
-         </div>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="ingresar" href="#">Ingresar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">Contáctanos</a>
+            </li>
+          </ul>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+
+
+
+
+  <!-- TEMPLATES/th> -->
+
+
+<template id="templateCard"> 
+  <div class="card col-12 col-md-4 mb-3" id="flex"> 
+     <img src="" class="card-img-top" alt="...">
+      <div class="card-body">
+      <h5></h5>
+      <p></p>
+      <button class="btn btn-dark">Comprar</button>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+ <template id="templatelistaCarrito"> 
+<tr>
+  <!-- <th scope="row"></th> -->
+<td></td>
+<td></td>
+<td> <span></span></td>
+ 
+</tr>
+ </template>
+
+
+ <div class="container">
+  <h1 class="text-center">TIENDA ONLINE CODER</h1>
+  <table class="table">
+    <thead>
+      <tr>
+      <!--   <th scope="col">#</th>-->
+        <th scope="col">Producto</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody id=""></tbody>
+  
+  </table>
+ 
+  <div class="row" id="Productos"></div>
 </div>
+
+
+
+
+<button type="button" id="btnBorrar"class="btn btn-primary">Vaciar Carrito</button>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="app.js"></script>
 </body>

@@ -5,6 +5,7 @@ const carrito = [];
 const productosDisponibles=[];
 let producto;
 let pass;
+let moneda="$";
 //let formaPago;
 let usuarioLogueado;
 
@@ -60,12 +61,12 @@ class Usuario{
     
 
         //sE HARCODEA PARA TRABAJAR MAS RAPIDO //NO ESTA IMPLEMENTADOP AGREGAR PRODUCTOS
-        const producto1  = new Producto (1,"TV SMART 50 ANDROID",19336,5,"tv50.jpg");
+        const producto1 = new Producto (1,"TV SMART 50 ANDROID",19336,5,"tv50.jpg");
         const producto2 = new Producto (2,"TV SMART 65 ANDROID",25025,0,"tv65.jpg");
         const producto3 = new Producto (3,"LAVARROPA CYAN C",11690,1,"lavarropa.jpg");
         const producto4 = new Producto (4,"AIRE ACONDICIONADO 12KBTU",22000,5,"Aire.jpg");
-        const producto5 = new Producto (4,"HELADERA FRENCH DOOR INV",52000,5,"Heladera.jpg");
-        const producto6 = new Producto (4,"MINICOMPONENTE 5000W",15000,5,"miniComponente.jpg");
+        const producto5 = new Producto (5,"HELADERA FRENCH DOOR INV",52000,5,"Heladera.jpg");
+        const producto6 = new Producto (6,"MINICOMPONENTE 5000W",15000,5,"miniComponente.jpg");
 
         productos.push(producto1);
         productos.push(producto2);
@@ -215,55 +216,8 @@ function mostrarMenuGeneral()
 
 
 
-//AGREGAR AL CARRITO
-function agregarAlCarrito()
-{
 
-contador=0;
-let compra="";
-let opcion=""
-let tablaAuxiliar=[];
-
-//recorro y MUESTRO PRODUCTOS CON STOCK POSITIVO 
-
-productos.forEach(producto => {
-  if(producto.cantidad>0){
-    contador++;
-    compra+="\n "+contador +" - "+producto.descripcion+ " $ "+producto.valor;
- tablaAuxiliar.push(producto); // guardo en tablaauxiliar el objeto en orden
-  }
-
-    });
-
-    opcion=Number(prompt(compra)); //IMPRIMO LAS OPCIONES
-
-let productoSeleccionado=tablaAuxiliar[opcion-1];
-let indice =productos.findIndex(producto => producto.id===productoSeleccionado.id); 
-let cantidad =Number(prompt(`Ingrese la cantidad, quedan disponibles: ${productoSeleccionado.cantidad}`));
-let stockActual =productos[indice].cantidad;
-
-
-while(stockActual<cantidad ) //controlo que no se ingrese una cantidad mayor a la que hay
-{
-    alert(`Lo sentimos , no hay stock suficiente, solo quedan ${productos[indice].cantidad}`);
-    cantidad= Number(prompt(`Ingrese la cantidad, quedan disponibles: ${productoSeleccionado.cantidad}`));
-}
-
-
-totalLinea= calcularPrecioLinea(productoSeleccionado.valor,cantidad);
-const lineacarrito =new Carrito(productoSeleccionado.id, productoSeleccionado.descripcion,cantidad,totalLinea);
-carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea*/
-alert ("Producto agregado correctamente");
-MoverStock(0,lineacarrito);
-
-MenuUsuario ();
-
-
-}
-
-
-
-
+/*
 //VER CARRITO
 function verCarrito()
 {
@@ -285,7 +239,7 @@ function verCarrito()
     
 }
 
-
+*/
 
 //VACIAR CARRITO
 
@@ -529,13 +483,16 @@ function comprar ()
 
 function MoverStock(modo,lineacarrito) //    //MODO 0 ES DEBITAR / MODO 1 ACREDITAR Y VIENE UN OBJETO CARRITO QUE ES LA LINEA
 {
+  
+    let i = productos.findIndex(prod => prod.id==lineacarrito.idProducto); //obtengo el indice del idproducto del objeto carrito
 
-       let index = productos.findIndex(producto => producto.id===lineacarrito.idProducto); //obtengo el indice del idproducto del objeto carrito
-   
-       if(modo===1){
-        productos[index].cantidad=productos[index].cantidad+lineacarrito.cantidad; }
-        else {
-        productos[index].cantidad=productos[index].cantidad-lineacarrito.cantidad ;
+     if(modo===1)
+     {
+      productos[i].cantidad=productos[i].cantidad+lineacarrito.cantidad; }
+     else {
+         
+          productos[i].cantidad=productos[i].cantidad-lineacarrito.cantidad;
+      
      }   
 
 }
@@ -556,33 +513,158 @@ function calcularPrecioLinea(precio,cantidad)
 
 
 //VERSION V2 con DOM MOSTRAR PRODUCTOS 
-function mostrarProductos()
-{
-    let textoBoton="";
-for (producto of productos)
-{
-    if(producto.cantidad<=0){
-        producto.valor="Agotado";
-        textoBoton="Agotado";
-    }
-    else{ textoBoton="Compar"}
 
-   const row =document.getElementById('Productos');
-   row.innerHTML +=`
-   <div class="col-12 col-md-4">
-   <div class="card" style="width: 18rem;">
-       <img src="imagenes/${producto.imagen}" class="card-img-top" alt="...">
-       <div class="card-body">
-         <h5 class="card-title" id="nombreProd">${producto.descripcion}</h5>
-         <p class="card-text">$<span>${producto.valor}</span></p>
-         <a href="#" class="btn btn-primary" data-id=${producto.id}>${textoBoton}</a>
-       </div>
-     </div>
-</div>`
+
+const produc=document.getElementById("Productos")
+const templateCard=document.getElementById("templateCard").content;
+const fragment = document.createDocumentFragment();
+
+
+function mostrarProductos(){
+
+
+produc.innerHTML="";
+
+    for(producto of productos)
+    {
+     
+        templateCard.querySelector("h5").textContent=producto.descripcion;
+        templateCard.querySelector("p").textContent=`${moneda} ${producto.valor}`;
+        templateCard.querySelector("img").setAttribute("src",`imagenes/${producto.imagen}`);
+        templateCard.querySelector("button").textContent="Comprar";
+        templateCard.querySelector("button").dataset.id = producto.id;
+        templateCard.querySelector("button").removeAttribute("disabled");
+        if(producto.cantidad<=0)
+         {
+   
+            templateCard.querySelector("p").textContent="Sin Stock";
+            templateCard.querySelector("button").textContent="Agotado";  
+            templateCard.querySelector("button").setAttribute("disabled","true"); 
+         }
+
+        const cardClonada= templateCard.cloneNode(true);
+        fragment.appendChild(cardClonada);
+
+    }
+
+  produc.appendChild(fragment);
+
+
+    
 }
+
+
+
+//AGREGAR ITEMS AL CARRITO
+function agregaraCarrito (idProdSeleccionado,descProdSeleccionado,valorProdSeleccionado)
+{
+
+    const lineacarrito =new Carrito(idProdSeleccionado, descProdSeleccionado,1,valorProdSeleccionado);
+    carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea
+     MoverStock(0,lineacarrito); //QUITO STOCK DEL ARRAY PRODCUTOS
+ // console.log(carrito);
 }
+
+
+
+//EVENTO DEL BOTON de comprar
+produc.addEventListener('click', e => { 
+
+
+    if (e.target.classList.contains('btn-dark')) //si hago click en el boton COMPRAR DE CADA CARD
+    {
+    let idProdSeleccionado =e.target.dataset.id;//con esto obtengo el idproducto clickeado
+    let descProdSeleccionado=e.target.parentElement.querySelector("h5").textContent;
+    let valorProdSeleccionado=e.target.parentElement.querySelector("p").textContent;
+    agregaraCarrito(idProdSeleccionado,descProdSeleccionado,valorProdSeleccionado);
+    verCarrito();
+    mostrarProductos()
+    }
+ 
+ 
+  
+});
+
+//evento boton ingresar
+const eventoBotonIngresar=document.getElementById("ingresar");
+eventoBotonIngresar.addEventListener('click', e => { 
+
+
+})
+
+//evento boton ingresar
+const eventoBotonLogin=document.getElementById("botonlogin");
+eventoBotonIngresar.addEventListener('click', e => { 
+console.log("hola boton login");
+
+})
+
+
+//evento boton vaciar carrito
+const eventoBotonVaciar=document.getElementById("btnBorrar");
+eventoBotonVaciar.addEventListener('click', e => {  
+  
+  
+  
+  
+        vaciarCarrito();
+        console.log(carrito.length)
+        productos[0].cantidad;
+        produc.innerHTML="";
+        mostrarProductos()
+    })
+
+
+//VER CARRITO
+function verCarrito()
+{
+    produc.innerHTML="";
+    const templateCARRITO=document.getElementById("templatelistaCarrito").content;
+
+    
+   
+         carrito.forEach(elementoCarrito => {
+
+      //  templateCARRITO.querySelector("th").textContent=elementoCarrito.idProducto;
+        templateCARRITO.querySelectorAll("td")[0].textContent=elementoCarrito.descProducto;
+        templateCARRITO.querySelectorAll("td")[1].textContent="1";
+        templateCARRITO.querySelector("span").textContent=elementoCarrito.precioLineaCarrito;
+        
+        const clone=templateCARRITO.cloneNode(true);
+        fragment.appendChild(clone)
+    });
+
+
+}
+    produc.appendChild(fragment);
+
+/*
+    let lineaCarrito="";
+    carrito.forEach(elementoCarrito => {//elementoCarrito es el elemento prodcuto que esta dentro del array 
+      // console.log(carrito);
+        lineaCarrito= lineaCarrito+ elementoCarrito.descProducto+"    Cantidad:" +elementoCarrito.cantidad+"    Total $" +elementoCarrito.precioLineaCarrito+" \n" ;
+        });
+
+            if(carrito.length===0)
+            {
+                alert("Su carrito está vacio");
+            }
+            else
+            {
+                alert(lineaCarrito);
+            }
+       
+    return lineaCarrito;
+    */
+//}
+
 
 mostrarProductos();
+
+
+
+
+
 
 
 
