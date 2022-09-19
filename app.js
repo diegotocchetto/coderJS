@@ -585,18 +585,18 @@ produc.addEventListener('click', e => {
  
   
 });
-
+/*
 //evento boton ingresar
-const eventoBotonIngresar=document.getElementById("ingresar");
-eventoBotonIngresar.addEventListener('click', e => { 
-
-
+const eventoBotonLogin=document.getElementById("btnLogin");
+eventoBotonLogin.addEventListener('click', e => { 
+console.log("eventoBotonLogin");
 })
+*/
 
-//evento boton ingresar
-const eventoBotonLogin=document.getElementById("botonlogin");
-eventoBotonIngresar.addEventListener('click', e => { 
-console.log("hola boton login");
+//evento link ingresar en
+const eventoLinkIngresar=document.getElementById("ingresar");
+eventoLinkIngresar.addEventListener('click', e => { 
+console.log("hola link login");
 
 })
 
@@ -644,25 +644,7 @@ function verCarrito()
 }
     produc.appendChild(fragment);
 
-/*
-    let lineaCarrito="";
-    carrito.forEach(elementoCarrito => {//elementoCarrito es el elemento prodcuto que esta dentro del array 
-      // console.log(carrito);
-        lineaCarrito= lineaCarrito+ elementoCarrito.descProducto+"    Cantidad:" +elementoCarrito.cantidad+"    Total $" +elementoCarrito.precioLineaCarrito+" \n" ;
-        });
 
-            if(carrito.length===0)
-            {
-                alert("Su carrito está vacio");
-            }
-            else
-            {
-                alert(lineaCarrito);
-            }
-       
-    return lineaCarrito;
-    */
-//}
 
 
 mostrarProductos();
