@@ -225,7 +225,6 @@ function verCarrito()
     carrito.forEach(elementoCarrito => {//elementoCarrito es el elemento que esta dentro del arry
        lineaCarrito= lineaCarrito+ elementoCarrito.descProducto+"    Cantidad:" +elementoCarrito.cantidad+"    Total $" +elementoCarrito.precioLineaCarrito+" \n" ;
         });
-
             if(carrito.length===0)
             {
                 alert("Su carrito está vacio");
@@ -238,7 +237,6 @@ function verCarrito()
     return lineaCarrito;
     
 }
-
 */
 
 //VACIAR CARRITO
@@ -648,10 +646,6 @@ function verCarrito()
 
 
 mostrarProductos();
-
-
-
-
 
 
 
