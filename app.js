@@ -7,10 +7,9 @@ let producto;
 let pass;
 let moneda="$";
 //let formaPago;
+
+
 let usuarioLogueado;
-
-
-//const usuarioLogueado;
 
 
 
@@ -109,10 +108,9 @@ function fechaActual()
    
 
 //SE VALIDA EL USUARIO AL LOGUEO
-
-
-function validarUsuario (nombreUsuario,password)
+function validarUsuario(nombreUsuario,password)
 {
+//console.log(usuarioLogueado)
     let valido=false;
     usuarioLogueado=usuarios.find(usuario => usuario.nombreUsuario.toLowerCase()===nombreUsuario.toLowerCase()); 
 
@@ -121,10 +119,11 @@ function validarUsuario (nombreUsuario,password)
                 if(usuarioLogueado.pass===password)
                 {
                      valido=true;
-                    
+                     sessionStorage.setItem("usuario",JSON.stringify(usuarioLogueado)); //GUARDO EL USUARIO
+                 
                 }        
         }
-    
+   
 return valido;
 
 }
@@ -132,8 +131,10 @@ return valido;
 
 
 
-//AGREGA AL USUARIO 
 
+
+
+//AGREGA AL USUARIO NO FUNCIONAL AUN CON DOM
 function agregarUsuario ()
 {
     let nombre =prompt("Ingrese Nombre").toUpperCase();
@@ -166,117 +167,56 @@ function agregarUsuario ()
 
 
  
-    mostrarMenuGeneral();
-}
-
-
-
-//MENU PARA LOGUEARSE
-
-function mostrarMenulogueo()
-{
-
-    let nombreUsuario= prompt("Ingrese Su Usuario");
-    let password= prompt("Ingrese su password");
-   if( validarUsuario(nombreUsuario,password))
-   {
-       //   alert(`Bienvenido ${usuarioLogueado.nombre.toUpperCase()} ${usuarioLogueado.apellido.toUpperCase()}`);
-
-          MenuUsuario ();
-
-   }
-   else
-   {
-   // alert("Usuario o contraseña incorrectos");
-    mostrarMenuGeneral();
-  
-    }
-    
-
-    
+  //  mostrarMenuGeneral();
 }
 
 
 
 
-//MENU GENERAL REGISTRARSE O INGRESAR
-function mostrarMenuGeneral()
-{
-    let entrada=Number(prompt("\n 1 - Registrarse \n 2 - Ingresar"));
-
-    if(entrada===1)
-    {
-        agregarUsuario ();
-    }2
-    if(entrada===2)
-    {
-        mostrarMenulogueo();
-    }
-}
 
 
-
-
-/*
-//VER CARRITO
-function verCarrito()
-{
-    let lineaCarrito="";
-    carrito.forEach(elementoCarrito => {//elementoCarrito es el elemento que esta dentro del arry
-       lineaCarrito= lineaCarrito+ elementoCarrito.descProducto+"    Cantidad:" +elementoCarrito.cantidad+"    Total $" +elementoCarrito.precioLineaCarrito+" \n" ;
-        });
-            if(carrito.length===0)
-            {
-                alert("Su carrito está vacio");
-            }
-            else
-            {
-                alert(lineaCarrito);
-            }
-       
-    return lineaCarrito;
-    
-}
-*/
-
-//VACIAR CARRITO
-
+//VACIAR CARRRITO
 function vaciarCarrito (accion)
  {
+const tamaniocarrtitoOriginal=carrito.length;
     for(let i=carrito.length;i>0;i--)
         {
    
              const lineacarrito =new Carrito (carrito[i-1].idProducto, carrito[i-1].descripcion,carrito[i-1].cantidad, carrito[i-1].precioLineaCarrito);
     
-            if(accion===0) //0 SE INVOCA DESDE VACIAR CARRITO / 1 - SE INVOCA DESDE EL PAGAR 
-            {
-                MoverStock(1,lineacarrito);
-            }
+          // SE QUITA MOMENTANEAMENTE FUNCION DE STOCK
+          //  if(accion===0) //0 SE INVOCA DESDE VACIAR CARRITO / 1 - SE INVOCA DESDE EL PAGAR 
+           // {
+          //      MoverStock(1,lineacarrito);
+         //   }
 
             carrito.pop();  //  vaciarCarrito(carrito) 
         
         }
         
+
+
+
         
-        if(carrito.length===0 && accion===0)
+        if(tamaniocarrtitoOriginal===0 && accion===0)
         {
-        //    alert("No hay items en su carrito");
+            alert("No hay items en su carrito");
         }
-        else
-        {
-            if(accion===0  ) //0 sE INVOCA DESDE VACIAR CARRITO / 1 - SE INVOCA DESDE EL PAGAR 
+       
+            if(accion===0 && tamaniocarrtitoOriginal>0 ) //0 sE INVOCA DESDE VACIAR CARRITO / 1 - SE INVOCA DESDE EL PAGAR 
             {
              alert("Los items del carrito se quitaron correctamente");
             } 
         }
  
     
-}
 
 
 
 
-//AGREGAR DINERO A LA CUENTA DEL USUARIO
+
+
+//AGREGAR DINERO A LA CUENTA DEL USUARIO // NO FUNCIONAL AUN CON DOM
 
 function agregarDineroACuentaUsuario (usuarioLogueado)
 {
@@ -303,14 +243,14 @@ function agregarDineroACuentaUsuario (usuarioLogueado)
 
 
 
-//GENERAR FACTURA
+//GENERAR FACTURA // NO FUNCIONAL AUN CON DOM
 
 function generarFactura(total,carrito)
 {
-    //let nroFactura=Math.ceil(Math.random()*1000000).toString();
+   // let nroFactura=Math.ceil(Math.random()*1000000).toString();
 
-  //  const factura = new Factura (usuarioLogueado.id,nroFactura,fechaActual(),total,carrito);
-   // facturas.push(factura);
+ // const factura = new Factura (usuarioLogueado.id,nroFactura,fechaActual(),total,carrito);
+ //  facturas.push(factura);
      
 }
 
@@ -318,7 +258,7 @@ function generarFactura(total,carrito)
 
 
 
-//VER FACTURAS
+//VER FACTURAS // NO FUNCIONAL AUN CON DOM
 
 function verFactura(idusuario)
 {
@@ -352,7 +292,7 @@ if (facturas.length>0)
 
 
 
-//MENU MICUENTA USUARIO LOGUEADO
+//MENU MICUENTA USUARIO LOGUEADO // NO FUNCIONAL AUN CON DOM
 
 function miCuenta (usuarioLogueado)
 {
@@ -384,7 +324,10 @@ function miCuenta (usuarioLogueado)
         }
    
 
-//MENU USUARIO LOGUEADO
+
+
+
+//MENU USUARIO LOGUEADO // NO FUNCIONAL AUN CON DOM
 
 function MenuUsuario()
 {
@@ -412,7 +355,7 @@ function MenuUsuario()
       
     break;
     case 6:
-            usuarioLogueado=null;
+           // usuarioLogueado=null;
             mostrarMenuGeneral();
       
     break;
@@ -428,18 +371,17 @@ function MenuUsuario()
 
 function montoCompra() //LINEAS DE FACTURA
 {
+ 
 
 let montoTotal=0;;
     if (carrito.length>0)
     {
-
         for(let i=0;i<carrito.length;i++)
         { 
 
             montoTotal=montoTotal+carrito[i].precioLineaCarrito;
           
         }
-
     } 
    return montoTotal;
 }
@@ -448,31 +390,32 @@ let montoTotal=0;;
 
 
 
+
 function comprar ()
 {
-    console.log("llego a comrar")
+
     let total=montoCompra();
     if(carrito.length>0){
 
-           // let i =usuarios.findIndex(usuario => usuario.nombreUsuario===usuarioLogueado.nombreUsuario); 
+           let i =usuarios.findIndex(usuario => usuario.nombreUsuario===JSON.parse(sessionStorage.getItem("usuario")).nombreUsuario); 
+     
 
-
-            // if(parseFloat(usuarios[i].cuenta)>=parseFloat(total))  {
-
-                    //actualizo el saldo en el array de usuariosd
-                //    usuarios[i].cuenta-=total;
-                  //  generarFactura(total,carrito);
+           if(parseFloat(usuarios[i].cuenta)>=parseFloat(total))  {
+               
+                  //  actualizo el saldo en el array de usuariosd
+                     usuarios[i].cuenta-=total;
+                     generarFactura(total,carrito);// NO FUNCIONAL AUN CON DOM
                      vaciarCarrito(1);
-                    alert("Compra Realizada con éxito, recibirá un correo con los detalles");
-              // }
-            // else{
-              //  alert(`Saldo Insuficiente, su saldo es de $ ${usuarios[i].cuenta} , recargue dinero para continuar con la compra`);
-             //  }
+                     alert(`Gracias ${usuarios[i].nombre} ${usuarios[i].apellido}, tu Compra se ha realizada con éxito, recibirá un correo a ${usuarios[i].email} con los detalles`);
+               }
+             else{
+                alert(`Saldo Insuficiente, su saldo es de $ ${parseFloat(usuarios[i].cuenta)} , recargue dinero para continuar con la compra`);
+               }
     }
     else{
-       window("Su carrito esta vacío, agregue productos pra comprar");
+       alert("Su carrito esta vacío, agregue productos para comprar");
     }
-   // MenuUsuario() ; 
+
 }
    
 
@@ -480,6 +423,7 @@ function comprar ()
 
 
 
+// FUNCION MOMENTANEAMENTE NO LLAMADA
 function MoverStock(modo,lineacarrito) //    //MODO 0 ES DEBITAR / MODO 1 ACREDITAR Y VIENE UN OBJETO CARRITO QUE ES LA LINEA
 {
   
@@ -506,7 +450,7 @@ function calcularPrecioLinea(precio,cantidad)
    return (totalLinea);
  
 }
-//mostrarMenuGeneral(); //SE COMENTA POR AGREGADO DE DOM
+
 
 
 
@@ -516,19 +460,25 @@ function calcularPrecioLinea(precio,cantidad)
 
 const produc=document.getElementById("Productos")
 const templateCard=document.getElementById("templateCard").content;
+
 const fragment = document.createDocumentFragment();
 
+
+
+
+//FUNCION PARA MOSTRAR PRODUCTOS
 
 function mostrarProductos(){
 
 
 produc.innerHTML="";
 
+
     for(producto of productos)
     {
      
         templateCard.querySelector("h5").textContent=producto.descripcion;
-        templateCard.querySelector("p").textContent=`${moneda} ${producto.valor}`;
+        templateCard.querySelector("p").textContent= producto.valor;
         templateCard.querySelector("img").setAttribute("src",`imagenes/${producto.imagen}`);
         templateCard.querySelector("button").textContent="Comprar";
         templateCard.querySelector("button").dataset.id = producto.id;
@@ -554,19 +504,51 @@ produc.innerHTML="";
 
 
 
+
+
+// SACO FUNCIONALIDAD DE STOCK MOMENTANEAMENTE
+
 //AGREGAR ITEMS AL CARRITO
 function agregaraCarrito (idProdSeleccionado,descProdSeleccionado,valorProdSeleccionado)
 {
+    console.log(carrito.idProducto)
 
-    const lineacarrito =new Carrito(idProdSeleccionado, descProdSeleccionado,1,valorProdSeleccionado);
-    carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea
-     MoverStock(0,lineacarrito); //QUITO STOCK DEL ARRAY PRODCUTOS
- // console.log(carrito);
+    if(carrito.length>0)
+    {
+       const i = carrito.findIndex(prod => prod.idProducto==idProdSeleccionado); //obtengo el indice del idproducto del objeto carrito
+       if(i==-1)
+       {
+       
+        const lineacarrito =new Carrito(idProdSeleccionado, descProdSeleccionado,1,valorProdSeleccionado);
+        carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea
+       }
+       else
+       {
+     
+        carrito[i].cantidad=carrito[i].cantidad+1;
+        carrito[i].precioLineaCarrito=carrito[i].precioLineaCarrito*carrito[i].cantidad;
+       }
+     
+
+       
+    }
+    else{
+        const lineacarrito =new Carrito(idProdSeleccionado, descProdSeleccionado,1,valorProdSeleccionado);
+        carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea  
+    }
+  
+    
+    console.log(carrito)     
+
+
 }
 
 
 
-//EVENTO DEL BOTON de comprar
+
+
+
+//EVENTO DEL BOTON COMPRAR de cada tarjeta
 produc.addEventListener('click', e => { 
 
 
@@ -576,80 +558,178 @@ produc.addEventListener('click', e => {
     let descProdSeleccionado=e.target.parentElement.querySelector("h5").textContent;
     let valorProdSeleccionado=e.target.parentElement.querySelector("p").textContent;
     agregaraCarrito(idProdSeleccionado,descProdSeleccionado,valorProdSeleccionado);
-    verCarrito();
+    //verCarrito();
     mostrarProductos()
     }
  
  
   
 });
-/*
-//evento boton ingresar
+
+
+
+
+//EVENTO DEL BOTON vercarrito
+const vercarrito=document.getElementById("btnVerCarrito");
+vercarrito.addEventListener('click', e => { 
+
+console.log(carrito);
+         verCarrito();
+    
+ 
+})
+
+
+
+//EVENTO BOTON LOGIN
+
 const eventoBotonLogin=document.getElementById("btnLogin");
+
 eventoBotonLogin.addEventListener('click', e => { 
-console.log("eventoBotonLogin");
+
+const usuarioDigitado=document.getElementById("txtUser").value;
+const UsuarioPassword=document.getElementById("txtPass").value;
+const valido=validarUsuario(usuarioDigitado,UsuarioPassword);
+
+
+if(valido){ // SI VALIDO USUARIO
+   const linkIngresar =document.getElementById("Linkingresar");
+   const linKMiCuenta=document.getElementById("LinkMiCuenta");
+   linkIngresar.setAttribute("class","nav-link disabled");
+   linkIngresar.setAttribute("disabled","true");   //SI VALIDO MARCO EL LINK deshabilitado PARA QUE NO SE PUEDA INGRESAR DE NUEVo
+   linkIngresar.textContent=`Bienvenido ${JSON.parse(sessionStorage.getItem("usuario")).nombre}`
+
+    const cerrarSesion=document.querySelector("#divCerrarSesion");
+    const botonCerrarSesion=document.createElement("a");
+    botonCerrarSesion.id="LinkCerrar";
+    botonCerrarSesion.className="nav-link active";
+    botonCerrarSesion.setAttribute("data-bs-target","#staticBackdrop");
+    botonCerrarSesion.setAttribute("href","");
+    botonCerrarSesion.setAttribute("aria-current","page");
+    botonCerrarSesion.setAttribute("class","btn-Cerrar'");
+    botonCerrarSesion.setAttribute("class","nav-link active")
+    linKMiCuenta.setAttribute("class","nav-link active")
+    linKMiCuenta.textContent="Mi cuenta";
+    botonCerrarSesion.textContent="Cerrar Sesion";
+    cerrarSesion.appendChild(botonCerrarSesion);
+
+
+
+
+
+
+
+
+//EVENTO BOTON CERRAR SESION
+const eventoBotonCerrarSesion=document.getElementById("LinkCerrar");
+eventoBotonCerrarSesion.addEventListener('click', e => {  
+ 
+    //ELIMINO EL SESSION STORAGE y quito el boton cerrar session Y CAMBIO EL ESTADO DEL BOTON INGRESAR
+   // if(ev.target.classList.contains('btn-Cerrar'))
+   // 
+        sessionStorage.removeItem("usuario");
+        cerrarSesion.removeChild(botonCerrarSesion) ;
+        linkIngresar.textContent=`Ingresar`;
+        linkIngresar.removeAttribute("class","nav-link disabled");
+   
+        linKMiCuenta.removeAttribute("class","nav-link disabled");
+      
+
+   // }
+
+    })
+
+}
+else{
+    alert("Usuario o contraseña incorrecta")
+}
+    
 })
-*/
-
-//evento link ingresar en
-const eventoLinkIngresar=document.getElementById("ingresar");
-eventoLinkIngresar.addEventListener('click', e => { 
-console.log("hola link login");
-
-})
 
 
-//evento boton vaciar carrito
+
+
+
+
+
+
+//EVENTO BOTON VACIAR CARRITO
 const eventoBotonVaciar=document.getElementById("btnBorrar");
 eventoBotonVaciar.addEventListener('click', e => {  
-
-  
+ 
+   
+    //alert(`Bienvenido ${usuarioLogueado.nombre}`);
   
         vaciarCarrito(0);
-        console.log(carrito.length)
         productos[0].cantidad;
         produc.innerHTML="";
         mostrarProductos()
     })
 
- //evento boton COMPRAR carrito
+
+
+
+
+
+
+
+ //EVENTO BOTON PAGAR
  const eventoBotonComprar=document.getElementById("btnComprar");
  eventoBotonComprar.addEventListener('click', e => {   
-   comprar();  
-mostrarProductos();
+
+//VERIFICO QUE ESTE ALGUIEN LOGUEADO
+
+    if(sessionStorage.getItem("usuario")===null)
+    {
+    alert("Usuario,debes loguearte para poder comprar");
+    }
+    else{
+     comprar();  
+    // mostrarProductos();
+    }
+ 
+
+   // mostrarProductos();
+
 })
+
+
+
+
+
 
 //VER CARRITO
 function verCarrito()
 {
-    produc.innerHTML="";
-    const templateCARRITO=document.getElementById("templatelistaCarrito").content;
+    document.getElementById("carritoConProducto").innerHTML="";
+    const templateCARRITO=document.getElementById("templatelistaCarrito").content; //aca es donde va la data
 
-    
+
    
          carrito.forEach(elementoCarrito => {
-
+            
       //  templateCARRITO.querySelector("th").textContent=elementoCarrito.idProducto;
-        templateCARRITO.querySelectorAll("td")[0].textContent=elementoCarrito.descProducto;
-        templateCARRITO.querySelectorAll("td")[1].textContent="1";
-        templateCARRITO.querySelector("span").textContent=elementoCarrito.precioLineaCarrito;
-        
-        const clone=templateCARRITO.cloneNode(true);
-        fragment.appendChild(clone)
+          templateCARRITO.querySelectorAll("td")[0].textContent=elementoCarrito.descProducto;
+          templateCARRITO.querySelectorAll("td")[1].textContent=elementoCarrito.cantidad;
+          templateCARRITO.querySelector("span").textContent=elementoCarrito.precioLineaCarrito;
+
+      
     });
+    
+    const clone=templateCARRITO.cloneNode(true);
+    document.getElementById("carritoConProducto").appendChild(clone)
 
-
+   
+//produc.appendChild(fragment);
+    
 }
-    produc.appendChild(fragment);
+  
+
 
 
 
 
 mostrarProductos();
-
-
-
-
 
 
 
