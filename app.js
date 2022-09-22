@@ -1,7 +1,8 @@
 const usuarios = [];
 const facturas = [];
 const productos = [];
-const carrito = [];
+let carrito = [];
+let carritoAux=[];
 const productosDisponibles = [];
 let producto;
 let pass;
@@ -435,11 +436,11 @@ function agregaraCarrito(idProdSeleccionado, descProdSeleccionado, valorProdSele
         carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea  
     }
 
-
-
+   
 
     if (localStorage.getItem("carrito") === null) {
         localStorage.setItem("carrito", JSON.stringify(carrito));
+
     }
     else {
         localStorage.removeItem("carrito")
@@ -469,13 +470,13 @@ produc.addEventListener('click', e => {
        
         contador=contador+1;
         contadorCarrito.innerHTML=contador;
-
+        localStorage.setItem("contador", JSON.stringify(contador)); //guardo la cantidad de
 
 
        const totalCarrito=document.getElementById("totCompra");
 
         totalCarrito.content=`MONTO TOTAL  $ ${montoCompra()}`;
-        produc.innerHTML(totalCarrito)
+       // produc.innerHTML(totalCarrito)
      
 
      
@@ -649,3 +650,7 @@ mostrarProductos();
 sessionStorage.removeItem("usuario"); //AL INICIAR PROGRAMA BORRO EL SESSIONSTORAGE PARA SEGURIDAD QUE HAYA QUEDADO DUPLICADO
 console.log(JSON.parse(localStorage.getItem("carrito")));
 carrito = JSON.parse(localStorage.getItem("carrito"));
+contador=JSON.parse(localStorage.getItem("contador"));
+let contadorCarrito=document.getElementById("contador");
+contadorCarrito.innerHTML=contador;
+vercarrito();
