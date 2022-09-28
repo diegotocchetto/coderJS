@@ -10,7 +10,7 @@ let contador=0;
 let usuarioLogueado;
 const linKMiSaldo = document.getElementById("LinkMiSaldo");
 const eventoBotonRegistro = document.getElementById("btnRegistro");
-const produc = document.getElementById("Productos")
+const html = document.getElementById("Productos")
 const templateCard = document.getElementById("templateCard").content;
 const fragment = document.createDocumentFragment();
 const templateCARRITO = document.getElementById("templatelistaCarrito").content; //aca es donde va la data
@@ -22,11 +22,7 @@ const linkIngresar = document.getElementById("Linkingresar");
 const linKMiCuenta = document.getElementById("LinkMiCuenta");
 const eventoBotonCerrarSesion = document.getElementById("LinkCerrar");
 const eventoBotonVaciar = document.getElementById("btnBorrar");
-
-const botonRestar = templateCARRITO.querySelectorAll("button")[1];
-
-
-
+const lineaMontoTotal=document.getElementById("totCompra");
 
 
 // CONSTRUCTOR FACTURA
@@ -55,9 +51,6 @@ class Usuario {
     }
 }
 
-
-
-
 //para borrar, SI BIEN SE Puede AGREGAR USUARIOS , SE HARCODEA PARA TRABAJAR MAS RAPIDO
 const usuario1 = new Usuario(1, "Diego", "Tocchetto", "dtoccho", "131313", 100000, "diego.tocchetto@gmail.com");
 const usuario2 = new Usuario(2, "Profesor Coder", "js", "profe", "111111", 5000, "profesor@gmail.com");
@@ -78,8 +71,6 @@ class Producto {
 }
 
 
-
-
 //sE HARCODEA PARA TRABAJAR MAS RAPIDO //NO ESTA IMPLEMENTADOP AGREGAR PRODUCTOS
 const producto1 = new Producto(1, "TV SMART 50 ANDROID", 19336, 5, "tv50.jpg");
 const producto2 = new Producto(2, "TV SMART 65 ANDROID", 25025, 0, "tv65.jpg");
@@ -97,10 +88,6 @@ productos.push(producto6);
 
 
 
-
-
-
-
 class Carrito {
     constructor(idProducto, descProducto, cantidad, precioLineaCarrito, total) {
         this.idProducto = idProducto;
@@ -113,9 +100,7 @@ class Carrito {
 
 
 
-
 //FUNCIONES UTILES
-
 
 function fechaActual() {
     let date = new Date();
@@ -145,11 +130,6 @@ function validarUsuario(nombreUsuario, password) {
 }
 
 
-
-
-
-
-
 //AGREGA AL USUARIO NO FUNCIONAL
 function agregarUsuario(usuarioNuevo) {
 
@@ -174,8 +154,7 @@ function agregarUsuario(usuarioNuevo) {
         Swal.fire({
             icon: 'error',
             title: "YA EXISTE UN USUARIO CON ESE CORREO ELECTRÓNICO",
-            text: 'Algo salió mal',
-            //footer: '<a href="">Why do I have this issue?</a>'
+
           })
     
     }
@@ -183,14 +162,10 @@ function agregarUsuario(usuarioNuevo) {
          Swal.fire({
             icon: 'error',
             title: "YA EXISTE UN USUARIO CON ESE NOMBRE DE USUARIO",
-            text: 'Algo salió mal',
-           // footer: '<a href="">Why do I have this issue?</a>'
           })
     }
 
 }
-
-
 
 
 
@@ -211,18 +186,16 @@ function vaciarCarrito(accion) {
         let contadorCarrito=document.getElementById("contador");
         contador=0;
         contadorCarrito.innerHTML=contador;
+        document.getElementById("btnCerrar").click();
     }
 
-
-
-
-
+    
     if (tamaniocarrtitoOriginal === 0 && accion === 0) {
         Swal.fire({
             icon: 'error',
-            title: "No hay items en su carritoO",
-            text: 'Algo salió mal',
-         //   footer: '<a href="">Why do I have this issue?</a>'
+            title: "No hay items en su carrito",
+
+
           })
     }
 
@@ -231,7 +204,6 @@ function vaciarCarrito(accion) {
         
         Swal.fire(
             'Los items del carrito se quitaron correctamente',
-            'You clicked the button!',
             'success'
           )
     }
@@ -244,22 +216,21 @@ function vaciarCarrito(accion) {
 
 function agregarDineroACuentaUsuario(usuarioLogueado) {
 
-    for (let i = 0; i < usuarios.length; i++) {
+    for(ElementoUsuario of usuarios)
+    {
         if (usuarios[i].nombreUsuario === usuarioLogueado.nombreUsuario) {
             //  alert(`Su saldo actual es ${usuarios[i].cuenta}`);
             let deposito = parseFloat(prompt("Ingrese el dinero a depositar"));
             let saldo = usuarios[i].cuenta;
-            usuarios[i].cuenta = salsdo + deposito;
+            usuarios[i].cuenta = saldo + deposito;
             usuarioLogueado = usuarios[i];
             //   alert(`Se ha agregado dinero a su cuenta, su saldo es ${usuarios[i].cuenta}`);
             break;
+    }
         }
 
-        MenuUsuario()
-    }
-    MenuUsuario();
+  
 }
-
 
 
 
@@ -272,8 +243,6 @@ function generarFactura(total, carrito) {
 
 
 
-
-
 //VER FACTURAS // NO FUNCIONAL AUN CON DOM
 
 function verFactura(idusuario) {
@@ -281,11 +250,12 @@ function verFactura(idusuario) {
     let misfacturas = "";
     if (facturas.length > 0) {
 
-        for (let i = 0; i < facturas.length; i++) {
-
-            if (facturas[i].idUsuario === usuarioLogueado.id) {
-                misfacturas += "Nro. Factura: " + facturas[i].nroFactura + " - " + "Fecha: " + facturas[i].fecha + " - " + "Total $: " + facturas[i].total + "\n";
-            }
+        for(elementoFactura of facturas)
+        {
+            if (facturas[i].idUsuario === usuarioLogueado.id) 
+                    {
+                        misfacturas += "Nro. Factura: " + facturas[i].nroFactura + " - " + "Fecha: " + facturas[i].fecha + " - " + "Total $: " + facturas[i].total + "\n";
+                    }
         }
     }
     else {
@@ -297,15 +267,16 @@ function verFactura(idusuario) {
 
 
 
+
 //SUMA TODOS LOS TOTALES DE CADA LINEA DEL CARRITO Y DEVUELVE EL TOTAL A PAGAR
 function montoCompra() {
     let montoTotal = 0;;
-    if (carrito.length > 0) {
-        for (let i = 0; i < carrito.length; i++) {
 
-            montoTotal = parseFloat(montoTotal) + parseFloat(carrito[i].total);
-        }
+    for(elementoCarrito of carrito)
+    {
+        montoTotal = parseFloat(montoTotal) + parseFloat(elementoCarrito.total);
     }
+
     return montoTotal;
 }
 
@@ -326,7 +297,7 @@ function comprar() {
             Swal.fire(
                 compraOk,
                 'Tus pedidos ya se están preparando',
-                'success'
+               // 'success'
               )
            
         }
@@ -336,8 +307,6 @@ function comprar() {
 Swal.fire({
     icon: 'error',
     title: compraError,
-    text: 'Algo salió mal',
-   // footer: '<a href="">Why do I have this issue?</a>'
   })
           
         }
@@ -346,8 +315,7 @@ Swal.fire({
         Swal.fire({
             icon: 'error',
             title: "Su carrito esta vacío, agregue productos para poder comprar",
-            text: 'Algo salió mal',
-           // footer: '<a href="">Why do I have this issue?</a>'
+
           })
      
     }
@@ -359,7 +327,7 @@ Swal.fire({
 
 
 // FUNCION MOMENTANEAMENTE NO LLAMADA
-function MoverStock(modo, lineacarrito) //    //MODO 0 ES DEBITAR / MODO 1 ACREDITAR Y VIENE UN OBJETO CARRITO QUE ES LA LINEA
+function moverStock(modo, lineacarrito) //    //MODO 0 ES DEBITAR / MODO 1 ACREDITAR Y VIENE UN OBJETO CARRITO QUE ES LA LINEA
 {
     let i = productos.findIndex(prod => prod.id == lineacarrito.idProducto); //obtengo el indice del idproducto del objeto carrito
     if (modo === 1) {
@@ -386,7 +354,7 @@ function calcularPrecioLinea(precio, cantidad){
 
 function mostrarProductos() {
 
-    produc.innerHTML = "";
+    html.innerHTML = "";
     for (producto of productos) { //EN EL FOR VOY AAGREGAANDO UNA TARJETA PRO CADA PRODUCTO
         templateCard.querySelector("h5").textContent = producto.descripcion;
         templateCard.querySelector("p").textContent = `$ ${producto.valor}`;
@@ -402,7 +370,7 @@ function mostrarProductos() {
         const cardClonada = templateCard.cloneNode(true);
         fragment.appendChild(cardClonada);
     }
-    produc.appendChild(fragment);
+    html.appendChild(fragment);
 }
 
 
@@ -418,34 +386,36 @@ function agregaraCarrito(idProdSeleccionado, descProdSeleccionado, valorProdSele
     if (carrito.length > 0) //SI EL CARRITO TIENE ALGO , VERIFICO SI EL PRODUCTO QUE LLEGA YA SE ENCUENTRA PARA SUMARLO
     {
             const i = carrito.findIndex(prod => prod.idProducto == idProdSeleccionado); //obtengo el indice del idproducto del objeto carrito
-        if (i == -1) {
+                  if (i == -1) 
+                  {
             //SI NO SE ENCUENTRA EN EL CARRITO LO GUARDO
             const lineacarrito = new Carrito(idProdSeleccionado, descProdSeleccionado, 1, valorProdSeleccionado, valorProdSeleccionado);
             carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea
-        }
-        else {
-            //SI SE ENCUENTRA EN EL CARRITO SUMO LA CANTIDAD Y EL TOTAL
-            carrito[i].cantidad = carrito[i].cantidad + 1;
-            //  carrito[i].precioLineaCarrito=carrito[i].precioLineaCarrito*carrito[i].cantidad;
-            carrito[i].total = carrito[i].cantidad * parseFloat(carrito[i].precioLineaCarrito);
-        }
+                  }
+                 else 
+                  {
+                    //SI SE ENCUENTRA EN EL CARRITO SUMO LA CANTIDAD Y EL TOTAL
+                     carrito[i].cantidad += 1;    
+                     carrito[i].total = carrito[i].cantidad * parseFloat(carrito[i].precioLineaCarrito);
+                   }
 
 
     }
-    else  //SI EL CARRITO ESTA VACIO LO AGREGO
+    else  //SI EL CARRITO ESTA VACIO LO AGREGO //HAY QUE OPTIMIZAR
     {
         const lineacarrito = new Carrito(idProdSeleccionado, descProdSeleccionado, 1, valorProdSeleccionado, valorProdSeleccionado);
         carrito.push(lineacarrito);//guardo un objeto carrito que contiene la info de la linea  
     }
 
-    if (localStorage.getItem("carrito") === null) {
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-
-    }
-    else {
-        localStorage.removeItem("carrito")
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-    }
+            if (localStorage.getItem("carrito") === null) 
+            {
+                localStorage.setItem("carrito", JSON.stringify(carrito));
+            }
+            else 
+            {
+                localStorage.removeItem("carrito")
+                  localStorage.setItem("carrito", JSON.stringify(carrito));
+            }
 }
 
 
@@ -454,7 +424,7 @@ function agregaraCarrito(idProdSeleccionado, descProdSeleccionado, valorProdSele
 
 
 //EVENTO DEL BOTON AGREGAR AL CARRITO EN CADA TARJETA
-produc.addEventListener('click', e => {
+html.addEventListener('click', e => {
 
 
     if (e.target.classList.contains('btn-dark')) //si hago click en el boton COMPRAR DE CADA CARD
@@ -512,60 +482,44 @@ eventoBotonLogin.addEventListener('click', e => {
 
     if (valido) 
     { // SI VALIDÓ USUARIO
-        
-
-                     //EVENTOS LINK MICUENTA
-                 
+                      //COMPORTAMIENTO LINK MICUENTA
                      linKMiCuenta.setAttribute("class", "nav-link active")
                      linKMiCuenta.setAttribute("disabled", "true"); 
                      linKMiCuenta.textContent  = "Mi Cuenta";
-
-                     
-
-             //EVENTOS LINK SALDO
- 
-        linKMiSaldo.setAttribute("class", "nav-link active")
-        linKMiSaldo.setAttribute("disabled", "true"); 
-        linKMiSaldo.textContent  = `Saldo Disponible $${usuarioLogueado.cuenta}`;
-
-
-                //EVENTOS LINK INGRESAR
-    
-        linkIngresar.setAttribute("disabled", "true");   //SI VALIDO MARCO EL LINK deshabilitado PARA QUE NO SE PUEDA INGRESAR DE NUEVo
-        linkIngresar.textContent = `Bienvenido ${JSON.parse(sessionStorage.getItem("usuario")).nombre}`
-        linkIngresar.setAttribute("class", "nav-link disabled");
-
-
-        //EVENTOS LINK REGISTRARSE
-    
-        linkRegistrarse.setAttribute("disabled", "true"); 
-        linkRegistrarse.setAttribute("class", "nav-link disabled");
-        linkRegistrarse.textContent  = "";
-       
-      
-  
+                     //COMPORTAMIENTO LINK SALDO
+                     linKMiSaldo.setAttribute("class", "nav-link active")
+                     linKMiSaldo.setAttribute("disabled", "true"); 
+                     linKMiSaldo.textContent  = `Saldo Disponible $${usuarioLogueado.cuenta}`;
+                      //COMPORTAMIENTO LINK INGRESAR
+                     linkIngresar.setAttribute("disabled", "true");   //SI VALIDO MARCO EL LINK deshabilitado PARA QUE NO SE PUEDA INGRESAR DE NUEVo
+                     linkIngresar.textContent = `Bienvenido ${JSON.parse(sessionStorage.getItem("usuario")).nombre}`
+                     linkIngresar.setAttribute("class", "nav-link disabled");
+                    //COMPORTAMIENTO LINK REGISTRARSE
+                    linkRegistrarse.setAttribute("disabled", "true"); 
+                    linkRegistrarse.setAttribute("class", "nav-link disabled");
+                    linkRegistrarse.textContent  = "";
+                     //COMPORTAMIENTO BOTON CERRAR SESION
+                     botonCerrarSesion.id = "LinkCerrar";
+                     botonCerrarSesion.className = "nav-link active";
+                     botonCerrarSesion.setAttribute("data-bs-target", "#staticBackdrop");
+                     botonCerrarSesion.setAttribute("href", "");
+                     botonCerrarSesion.setAttribute("aria-current", "page");
+                     botonCerrarSesion.setAttribute("class", "btn-Cerrar'");
+                     botonCerrarSesion.setAttribute("class", "nav-link active")
+                     botonCerrarSesion.textContent = "Cerrar Sesion";
+                    //COMPORTAMIENTO LINK MI CUENTA
+                    linKMiCuenta.setAttribute("class", "nav-link active")
+                    linKMiCuenta.textContent = "Mi cuenta";
         
-        botonCerrarSesion.id = "LinkCerrar";
-        botonCerrarSesion.className = "nav-link active";
-        botonCerrarSesion.setAttribute("data-bs-target", "#staticBackdrop");
-        botonCerrarSesion.setAttribute("href", "");
-        botonCerrarSesion.setAttribute("aria-current", "page");
-        botonCerrarSesion.setAttribute("class", "btn-Cerrar'");
-        botonCerrarSesion.setAttribute("class", "nav-link active")
-        linKMiCuenta.setAttribute("class", "nav-link active")
-        linKMiCuenta.textContent = "Mi cuenta";
-        botonCerrarSesion.textContent = "Cerrar Sesion";
-        cerrarSesion.appendChild(botonCerrarSesion);
+                   cerrarSesion.appendChild(botonCerrarSesion);
 
 
 
         //EVENTO BOTÓN CERRAR SESION
-  
-        eventoBotonCerrarSesion.addEventListener('click', e => {
-
+           eventoBotonCerrarSesion.addEventListener('click', e => {
             //ELIMINO EL SESSION STORAGE y quito el boton cerrar session Y CAMBIO EL ESTADO DEL BOTON INGRESAR
-            sessionStorage.removeItem("usuario");
-            cerrarSesion.removeChild(botonCerrarSesion);
+            sessionStorage.removeItem("usuario");// QUITO AL USUARIO DEL STORAGE
+            cerrarSesion.removeChild(botonCerrarSesion); //QUITO EL BOTON CERRAR SESION
             linkIngresar.textContent = `Ingresar`;
             linkIngresar.removeAttribute("class", "nav-link disabled");
             linKMiCuenta.removeAttribute("class", "nav-link disabled");
@@ -576,28 +530,18 @@ eventoBotonLogin.addEventListener('click', e => {
 Swal.fire({
     icon: 'error',
     title: 'Usuario o Contraseña incorrectos, vuelve a intentarlo',
-    text: 'Algo salió mal',
-    footer: '<a href="">Why do I have this issue?</a>'
+   // text: 'Algo salió mal',
   })
     }
 })
 
 
-
-
-
-
-
+/////////////////////////////////EVENTOS ///////////////////////////////////
 
 //EVENTO BOTON VACIAR CARRITO
-
 eventoBotonVaciar.addEventListener('click', e => {
-
-
-    //alert(`Bienvenido ${usuarioLogueado.nombre}`);
-
     vaciarCarrito(0);
-    produc.innerHTML = "";
+    html.innerHTML = "";
     mostrarProductos()
     localStorage.removeItem("carrito")
     contador=0;
@@ -605,15 +549,7 @@ eventoBotonVaciar.addEventListener('click', e => {
 })
 
 
-
-
-
-
-
 //EVENTO BOTON REGISTRARSE
-
-
-
 eventoBotonRegistro.addEventListener('click', e => {
 
     const nombreUsuario = document.getElementById("txtUser").value;
@@ -629,42 +565,77 @@ eventoBotonRegistro.addEventListener('click', e => {
 })
 
 
-
-
-
-
-
 //EVENTO BOTON PAGAR
-
 eventoBotonComprar.addEventListener('click', e => {
-
     //VERIFICO QUE ESTE ALGUIEN LOGUEADO
-
     if (sessionStorage.getItem("usuario") === null) {
         Swal.fire({
             icon: 'error',
             title: "Usuario,debes loguearte para poder comprar",
-            text: 'Algo salió mal',
-           // footer: '<a href="">Why do I have this issue?</a>'
+           //text: 'Algo salió mal',
           })
-      
     }
     else {
         comprar();
         localStorage.removeItem("carrito")
         linKMiSaldo.textContent  = `Saldo Disponible $${usuarioLogueado.cuenta}`;
-      
     }
-
 
 })
 
 
+// EVENTOS PARA SUMAR Y RESTAR EN CARRITO
+SumoResto = () => {
+ 
+    const botonSumar= document.querySelectorAll("#carritoConProducto .btn-info")
+    const botonRestar= document.querySelectorAll("#carritoConProducto .btn-danger")
+    
+    //RECORRO TODOS LOS BOTONES BTNSUMAR
+    botonSumar.forEach(btn => {
+    btn.addEventListener('click',()=> {
+    //console.log("estoy sumando")
+     const i = carrito.findIndex(prod => prod.idProducto == btn.dataset.id); //obtengo el indice del idproducto del objeto carrito
+     carrito[i].cantidad+=1;
+     carrito[i].total= calcularPrecioLinea(carrito[i].precioLineaCarrito, carrito[i].cantidad)
+     contador++;
+    
+    verCarrito() ;
+    contadorCarrito.innerHTML=contador;
+    
+    
+    })
+    })
+    
+    
+    
+    //RECORRO TODOS LOS BOTONES RESTAR
+    botonRestar.forEach(btn => {
+        btn.addEventListener('click',()=> {
+           // console.log("estoy restando")
+            const i = carrito.findIndex(prod => prod.idProducto == btn.dataset.id); //obtengo el indice del idproducto del objeto carrito
+            carrito[i].cantidad-=1;
+            carrito[i].total= calcularPrecioLinea(carrito[i].precioLineaCarrito, carrito[i].cantidad)
+            if(carrito[i].cantidad==0)
+            {
+                carrito.splice(i,1);//BORRO EL ELEMENTO SI ES 0
+            }
+            contador--;
+            contadorCarrito.innerHTML=contador
+            verCarrito() ;
+        })
+        })
+    
+    
+    
+    }
 
 
 //VER CARRITO
 function verCarrito() {
+  
+
     document.getElementById("carritoConProducto").innerHTML = "";
+
     for (elementoCarrito of carrito) {
 
        // templateCARRITO.querySelector("th").value=elementoCarrito.idProducto;
@@ -679,51 +650,15 @@ function verCarrito() {
         fragment.appendChild(clone);
     }
 document.getElementById("carritoConProducto").appendChild(fragment)
-SumoResto();
+lineaMontoTotal.textContent=textContent=`Total Compra: $${montoCompra()}`;
+SumoResto () ;
+
 }
 
 
 
 
-
-// evento para botones SUMAR Y RESTAR
-const SumoResto = () => {
-
-const botonSumar= document.querySelectorAll("#carritoConProducto .btn-info")
-const botonRestar= document.querySelectorAll("#carritoConProducto .btn-danger")
-
-
-botonSumar.forEach(btn => {
-btn.addEventListener('click',()=> {
-
-    console.log(btn.dataset.id)
- const i = carrito.findIndex(prod => prod.idProducto == btn.dataset.id); //obtengo el indice del idproducto del objeto carrito
- carrito[i].cantidad+=1;
-
- carrito[i].total= calcularPrecioLinea(carrito[i].precioLineaCarrito, carrito[i].cantidad)
- contador++;
- verCarrito() ;
-})
-})
-
-botonRestar.forEach(btn => {
-    btn.addEventListener('click',()=> {
-        const i = carrito.findIndex(prod => prod.idProducto == btn.dataset.id); //obtengo el indice del idproducto del objeto carrito
-        carrito[i].cantidad-=1;
-        carrito[i].total= calcularPrecioLinea(carrito[i].precioLineaCarrito, carrito[i].cantidad)
-        if(carrito[i].cantidad==0)
-        {
-            carrito.splice(i,1);//BORRO EL ELEMENTO SI ES 0
-        }
-        contador--;
- 
-        verCarrito() ;
-    })
-    })
-    contadorCarrito.innerHTML=contador;//REFRESCO EL CONTADOR CARRTIO
-}
-
-
+//////////////INICIO////////////////////////
 
 mostrarProductos();
 sessionStorage.removeItem("usuario"); //AL INICIAR PROGRAMA BORRO EL SESSIONSTORAGE PARA SEGURIDAD QUE HAYA QUEDADO DUPLICADO
@@ -733,6 +668,4 @@ contador=JSON.parse(localStorage.getItem("contador")); //OBTENGO EL CONTADOR DE 
 
 let contadorCarrito=document.getElementById("contador");
 contadorCarrito.innerHTML=contador;
-//verCarrito();
 
-    
