@@ -144,7 +144,7 @@ function agregarUsuario(usuarioNuevo) {
         Swal.fire(
             (`Hola ${usuarioNuevo.nombre} ${usuarioNuevo.apellido} , te has registrado correctamente`),
             '',
-            'success'
+            'vamos...segui comprando'
           )
     }
 
@@ -204,13 +204,10 @@ function vaciarCarrito(accion) {
         
         Swal.fire(
             'Los items del carrito se quitaron correctamente',
-            'success'
+            'vamos , busca el producto que te gusta y agregalo'
           )
     }
 }
-
-
-
 
 //AGREGAR DINERO A LA CUENTA DEL USUARIO // NO FUNCIONAL AUN CON DOM
 
@@ -445,9 +442,18 @@ html.addEventListener('click', e => {
 
         const totalCarrito=document.getElementById("totCompra");
         totalCarrito.content=`MONTO TOTAL  $ ${montoCompra()}`;
+        Toastify({
+            text: "Producto agregado al carrito!",
+            duration: 3000,
+            gravity: 'bottom',
+            position: 'center',
+            style: {
+                background: 'linear-gradient(to left, #00b09b, #96c92d)'
+            }
+        }).showToast();
+        
     }
 });
-
 
 
 
@@ -512,7 +518,15 @@ eventoBotonLogin.addEventListener('click', e => {
                     linKMiCuenta.textContent = "Mi cuenta";
         
                    cerrarSesion.appendChild(botonCerrarSesion);
-
+                   Toastify({
+                    text: "Has iniciado sesion correctamente!",
+                    duration: 2000,
+                    gravity: 'bottom',
+                    position: 'center',
+                    style: {
+                        background: 'linear-gradient(to left, #00b09b, #96c92d)'
+                    }
+                }).showToast();
 
 
         //EVENTO BOTÓN CERRAR SESION
@@ -601,8 +615,6 @@ SumoResto = () => {
     
     verCarrito() ;
     contadorCarrito.innerHTML=contador;
-    
-    
     })
     })
     
@@ -625,7 +637,8 @@ SumoResto = () => {
         })
         })
     
-    
+     
+        
     
     }
 
@@ -663,7 +676,8 @@ SumoResto () ;
 mostrarProductos();
 sessionStorage.removeItem("usuario"); //AL INICIAR PROGRAMA BORRO EL SESSIONSTORAGE PARA SEGURIDAD QUE HAYA QUEDADO DUPLICADO
 
-carrito=[]= JSON.parse(localStorage.getItem("carrito"));//OBTENGO LO QUE TENGO EN EL CARRITO
+
+carrito= JSON.parse(localStorage.getItem("carrito")) || [] ;//OBTENGO LO QUE TENGO EN EL CARRITO
 contador=JSON.parse(localStorage.getItem("contador")); //OBTENGO EL CONTADOR DE PRODUCTOS
 
 let contadorCarrito=document.getElementById("contador");
